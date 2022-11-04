@@ -1,5 +1,5 @@
-from main import test_ddg0
 import pytest
+import requests
 
 # List of presidents
 pres = ['George Washington', 'John Adams', 'Thomas Jefferson', 'James Madison', 'James Monroe', 'John Quincy Adams',
@@ -15,42 +15,53 @@ pres = ['George Washington', 'John Adams', 'Thomas Jefferson', 'James Madison', 
         'Gerald Ford', 'Jimmy Carter', 'Ronald Reagan', 'George H. W. Bush', 'Bill Clinton', 'George W. Bush',
         'Barack Obama', 'Donald Trump', "Joe Biden"]
 
+
 # As of November 3rd 2022 there are 46 presidents
-assert len(pres) == 46
 
-# assuming no human interaction, otherwise query = userinput
-query = 'presidents of the united states'
 
-# Send to our API query, it returns json data
-ddgData = test_ddg0(query)
 
-# Empty list to store presidents
-returnedData = []
-# Loop all json data and format as needed for this specific scenario
+def test_length_of_list():
+    assert len(pres) == 46
 
-# Just read that we have to use text.
-# for i in ddgData:
-#    data = i["FirstURL"]
-#    formatData = data.split('m/', 1)[-1]
-#    formatData = formatData.replace('_', ' ')
-#    returnedData.append(formatData)
-# if this gets populated then the president lost popularity contest
-# loops all presidents, make sure all are in list of returned data
-# loserPresidents = [x for x in pres if x not in returnedData]
+def test_ddg0():
+    url_ddg = "https://api.duckduckgo.com"
 
-for i in ddgData:
-    data = i["Text"]
-    returnedData.append(data)
+    resp = requests.get(url_ddg + "/?q=presidents of the united states&format=json&pretty=1&nohtml=1")
+    rsp_data = resp.json()
+    # print(rsp_data)
+    goodData = rsp_data["RelatedTopics"]
+    # for i in goodData:
+    # print(i["FirstURL"])
 
-# for all returned data text strings
-for i in returnedData:
-    # loop each president (alphabetical order helps runtime)
-    for j in pres:
-        # if president's name is in the list
-        if j in i:
-            # for each instance ... (Grover Cleveland's interrupted two terms make it weird')
-            while j in pres:
-                # remove from list of presidents
-                pres.remove(j)
+    # Loop all json data and format as needed for this specific scenario
 
-assert len(pres) == 0
+    # Just read that we have to use text.
+    # for i in goodData:
+    #    data = i["FirstURL"]
+    #    formatData = data.split('m/', 1)[-1]
+    #    formatData = formatData.replace('_', ' ')
+    #    returnedData.append(formatData)
+    # if this gets populated then the president lost popularity contest
+    # loops all presidents, make sure all are in list of returned data
+    # loserPresidents = [x for x in pres if x not in returnedData]
+
+
+    returnedData = []
+    for i in goodData:
+        data = i["Text"]
+        returnedData.append(data)
+        
+    # if this remains populated then the president lost popularity contest, or code is bad
+    loserpresidents = pres
+    # for all returned data text strings
+    for i in returnedData:
+        # loop each president (alphabetical order helps runtime)
+        for j in loserpresidents:
+            # if president's name is in the list
+            if j in i:
+                # for each instance ... (Grover Cleveland's interrupted two terms make it weird')
+                while j in loserpresidents:
+                    # remove from list of presidents
+                    loserpresidents.remove(j)
+    
+    assert len(loserpresidents) == 0
