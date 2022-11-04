@@ -1,5 +1,5 @@
 from main import test_ddg0
-
+import pytest
 
 # List of presidents
 pres = ['George Washington', 'John Adams', 'Thomas Jefferson', 'James Madison', 'James Monroe', 'John Quincy Adams',
@@ -29,14 +29,14 @@ returnedData = []
 # Loop all json data and format as needed for this specific scenario
 
 # Just read that we have to use text..
-#for i in ddgData:
+# for i in ddgData:
 #    data = i["FirstURL"]
 #    formatData = data.split('m/', 1)[-1]
 #    formatData = formatData.replace('_', ' ')
 #    returnedData.append(formatData)
 # if this gets populated then the president lost popularity contest
 # loops all presidents, make sure all are in list of returned data
-#loserPresidents = [x for x in pres if x not in returnedData]
+# loserPresidents = [x for x in pres if x not in returnedData]
 
 for i in ddgData:
     data = i["Text"]
@@ -44,16 +44,13 @@ for i in ddgData:
 
 # for all returned data text strings
 for i in returnedData:
-    #loop each president (alphabeical order helps runtime)
+    # loop each president (alphabeical order helps runtime)
     for j in pres:
-        #if president's name is in the list
+        # if president's name is in the list
         if j in i:
-            #for each instance ... (Grover Cleveland's interupted two terms make it weird')
+            # for each instance ... (Grover Cleveland's interupted two terms make it weird')
             while j in pres:
-                #remove from list of presidents
+                # remove from list of presidents
                 pres.remove(j)
 
-
-
 assert len(pres) == 0
-
