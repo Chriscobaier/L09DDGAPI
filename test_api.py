@@ -28,7 +28,7 @@ ddgData = test_ddg0(query)
 returnedData = []
 # Loop all json data and format as needed for this specific scenario
 
-# Just read that we have to use text..
+# Just read that we have to use text.
 # for i in ddgData:
 #    data = i["FirstURL"]
 #    formatData = data.split('m/', 1)[-1]
@@ -44,11 +44,11 @@ for i in ddgData:
 
 # for all returned data text strings
 for i in returnedData:
-    # loop each president (alphabeical order helps runtime)
+    # loop each president (alphabetical order helps runtime)
     for j in pres:
         # if president's name is in the list
         if j in i:
-            # for each instance ... (Grover Cleveland's interupted two terms make it weird')
+            # for each instance ... (Grover Cleveland's interrupted two terms make it weird')
             while j in pres:
                 # remove from list of presidents
                 pres.remove(j)
