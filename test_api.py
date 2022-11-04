@@ -25,8 +25,8 @@ def test_length_of_list():
 
 def test_ddg0():
     url_ddg = "https://api.duckduckgo.com"
-
-    resp = requests.get(url_ddg + "/?q=presidents of the united states&format=json&pretty=1&nohtml=1")
+    query = 'presidents of the united states'
+    resp = requests.get(url_ddg + f"/?q={query}&format=json&pretty=1&nohtml=1")
     rsp_data = resp.json()
     # print(rsp_data)
     goodData = rsp_data["RelatedTopics"]
@@ -50,7 +50,7 @@ def test_ddg0():
     for i in goodData:
         data = i["Text"]
         returnedData.append(data)
-        
+
     # if this remains populated then the president lost popularity contest, or code is bad
     loserpresidents = pres
     # for all returned data text strings
@@ -63,5 +63,5 @@ def test_ddg0():
                 while j in loserpresidents:
                     # remove from list of presidents
                     loserpresidents.remove(j)
-    
+
     assert len(loserpresidents) == 0
